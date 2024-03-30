@@ -1,15 +1,17 @@
 import AppointmentItem from "../AppointmentItem/AppointmentItem";
 
 // AppointmentList Component
-const AppointmentList = ({ appointments }) => (
+const AppointmentList = ({ appointments, onJoin, onCancel }) => (
   <div className="appointment-list">
     {appointments.map((appointment, index) => (
       <AppointmentItem
         key={index}
         specialty={appointment.specialty}
-        doctorName={appointment.doctorName}
+        userName={appointment.userName}
         date={appointment.date}
-        time={appointment.time}
+        duration={appointment.duration}
+        onJoin={onJoin}
+        onCancel={onCancel}
       />
     ))}
   </div>

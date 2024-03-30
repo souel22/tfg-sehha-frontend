@@ -1,0 +1,99 @@
+.scheduler {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .scheduler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .scheduler-header img.logo {
+    max-height: 50px;
+  }
+  
+  .scheduler-header nav button {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #007bff;
+  }
+  
+  .scheduler-header nav button:hover {
+    color: #0056b3;
+  }
+  
+  .appointment-form h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .appointment-form input,
+  .appointment-form select,
+  .appointment-form textarea {
+    width: calc(100% - 1rem);
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .appointment-form textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  .appointment-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .appointment-form button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .appointment-form button[type="button"] {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    margin-left: 0.5rem;
+  }
+  
+  .appointment-form button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .appointment-form button[type="button"]:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+  }
+  
+  /* Utility classes */
+  .hidden {
+    display: none;
+  }
+  

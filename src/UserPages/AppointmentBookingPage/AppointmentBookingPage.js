@@ -3,8 +3,10 @@ import SearchBar from "./SearchBar/SearchBar";
 import SpecialistCard from "./SpecialistCard/SpecialistCard";
 import Footer from "./Footer/Footer";
 
+
 // Main Page Component
 const AppointmentBookingPage = () => {
+
   return (
     <div>
       <Header />

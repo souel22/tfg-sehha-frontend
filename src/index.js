@@ -9,35 +9,40 @@ import AppointmentsPage from "./UserPages/AppointmentsPage/AppointmentsPage";
 import ConsultationPage from "./UserPages/ConsultationPage/ConsultationPage";
 import SpecialistAppointmentsPage from "./SpecialistPages/SpecialistAppointmentsPage/SpecialistAppointmentsPage";
 import SpecialistConsultationPage from "./SpecialistPages/SpecialistConsultationPage/SpecialistConsultationPage";
+import Scheduler from "./SpecialistPages/Scheduler/Scheduler";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: process.env.REACT_APP_HOMEPAGE,
     element: <HomePage />,
   },
   {
-    path: "/user/book",
+    path: process.env.REACT_APP_USER_RESERVE_URL,
     element: <AppointmentBookingPage />,
   },
   {
-    path: "/user/appointments",
+    path: process.env.REACT_APP_USER_APPOINTMENTS_URL,
     element: <AppointmentsPage />,
   },
   {
-    path: "/user/video",
+    path: process.env.REACT_APP_USER_VIDEO_URL,
     element: <ConsultationPage />,
   },
   {
-    path: "/specialist/appointments",
+    path: process.env.REACT_APP_SPECIALIST_APPOINTMENTS_URL,
     element: <SpecialistAppointmentsPage />,
   },
   {
-    path: "/specialist/video",
+    path: process.env.REACT_APP_SPECIALIST_VIDEO_URL,
     element: <SpecialistConsultationPage />,
   },
+  {
+    path: process.env.REACT_APP_SPECIALIST_SCHEDULE_APPOINTMENT_URL, 
+    element: <Scheduler />,
+  }
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById(process.env.REACT_APP_ROOT_DIV));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
