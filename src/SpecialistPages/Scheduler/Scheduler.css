@@ -92,6 +92,41 @@
     border-color: #5a6268;
   }
   
+  .error-message {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+    color: #d8000c;
+    /* Make the text stand out */
+    text-shadow: 1px 1px rgba(255,255,255,0.5);
+    /* Soften the edges */
+    border-radius: 5px;
+  }
+  
+  /* Optional: Add a little icon or emoji for visual emphasis */
+  .error-message:before {
+    content: "⚠️";
+    padding-right: 5px;
+  }
+  
+  /* If you want the error message to be dismissible */
+  .error-message.dismissible {
+    position: relative;
+    padding-right: 30px; /* Make space for the close button */
+  }
+  
+  .error-message.dismissible:after {
+    content: "✖";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #9c1c1c;
+  }
+  
+
   /* Utility classes */
   .hidden {
     display: none;

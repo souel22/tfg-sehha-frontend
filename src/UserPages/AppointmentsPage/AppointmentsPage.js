@@ -7,16 +7,30 @@ import AppointmentList from "./AppointmentList/AppointmentList"; // Adjust based
 
 const AppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);
+  const [specialists, setSpecialists] = useState([]);
+  const [specialities, setSpecialities] = useState([]);
+  const [user, setUser] = useState("")
   const baseUrl = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_URL 
+  const userId = '65f262e2ead0021324f4730f'
+  const sortPopulated = 'slot.startTime'
 
   useEffect(() => {
     // Define the function to fetch appointments
     const fetchAppointments = async () => {
       try {
         const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_APPOINTMENTS_PATH;
-        const url = baseUrl + path;
+        const url = baseUrl + path + `?user=${userId}&sortPopulated=${sortPopulated}`;
         const response = await axios.get(url);
+
+        // Extracting specialities
+        setSpecialities(response.data.map(item => item.speciality));
+
+        // Extracting specialists
+        setSpecialists( response.data.map(item => item.specialist));
         setAppointments(response.data); // Assuming the API returns an array of appointments
+
+        // Set user info
+        setUser(response.data[0].user)
       } catch (error) {
         console.error('Error fetching appointments:', error);
       }
@@ -31,7 +45,7 @@ const AppointmentsPage = () => {
     try {
       console.log(filters)
       const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_APPOINTMENTS_PATH
-      const url = baseUrl + path
+      let url = baseUrl + path + `?user=${userId}&sortPopulated=${sortPopulated}`;
 
       // Check if filters values are empty before sending the said filters looping over the filters
       // Send only non empty filters
@@ -41,9 +55,9 @@ const AppointmentsPage = () => {
           delete filters[key];
         }
       }
-
+      console.log(filters)
       const response = await axios.get( url , { params: filters });
-      console.log(response.data)
+
       setAppointments(response.data); // Assuming the API returns the filtered list of appointments
     } catch (error) {
       console.error('Error fetching filtered appointments:', error);
@@ -93,8 +107,8 @@ const handleJoin = async (joinUrl) => {
 
   return (
     <div>
-      <Header onReserve={handleReserve} onLogout={handleLogout} client={"Client Name"} />
-      <SearchBar onFilter={handleFilter} />
+      <Header onReserve={handleReserve} onLogout={handleLogout} client={`${user.firstName} ${user.lastName}`} />
+      <SearchBar onFilter={handleFilter} specialities={specialities} specialists={specialists}/>
       <AppointmentList appointments={appointments} onCancel={handleCancel} onJoin={handleJoin} />
       <Footer />
     </div>

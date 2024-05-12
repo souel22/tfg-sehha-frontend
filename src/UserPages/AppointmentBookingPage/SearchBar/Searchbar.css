@@ -1,0 +1,74 @@
+.search-bar {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto; /* Center the search bar */
+  }
+  
+  .input-with-suggestions input,
+  .search-bar input[type="datetime-local"],
+  .search-bar .search-button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px; /* Increase font size for better readability */
+  }
+  
+  .input-with-suggestions input:focus,
+  .search-bar input[type="datetime-local"]:focus {
+    outline: none;
+    border-color: #007bff; /* Bootstrap primary color for focus */
+  }
+  
+  .suggestions-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    position: absolute;
+    width: calc(100% - 20px); /* Adjust width based on parent padding */
+    z-index: 5;
+  }
+  
+  .suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .suggestions-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .suggestions-list li:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .search-bar .search-button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-bar .search-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Adjust the form layout on smaller screens */
+  @media (max-width: 768px) {
+    .search-bar {
+      flex-direction: column;
+    }
+  }
+  

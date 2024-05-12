@@ -10,8 +10,8 @@ const AppointmentList = ({ appointments, onCancel, onJoin }) => {
         <AppointmentItem
           key={index}
           appointemntId={appointment.id}
-          specialty={appointment.speciality}
-          doctorName={appointment.specialist}
+          specialty={appointment.speciality.name}
+          doctorName={`${appointment.specialist.firstName} ${appointment.specialist.lastName}`}
           status={appointment.status}
           date={appointment.date}
           time={appointment.duration}

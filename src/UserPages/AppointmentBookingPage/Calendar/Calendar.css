@@ -1,0 +1,24 @@
+.rbc-calendar {
+    background-color: #fff;
+    border-radius: 8px;
+    height: 100%;
+  }
+  
+  .rbc-event {
+    background-color: #4CAF50;  /* Green for available slots */
+    color: white;
+    border-radius: 4px;
+    padding: 4px 8px;
+  }
+  
+  .rbc-event.rbc-selected {
+    background-color: #D32F2F;  /* Red for selection */
+  }
+  
+  .specialistCalendarContainer {
+    height: 80%;  /* Adjust the height as needed */
+    width: 100%;     /* Adjust the width as needed */
+    margin: auto;   /* Centers the calendar */
+  }
+  
+  
