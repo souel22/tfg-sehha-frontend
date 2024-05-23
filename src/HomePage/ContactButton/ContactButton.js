@@ -1,12 +1,17 @@
-// ContactButton Component
-const ContactButton = () => {
+import React from 'react';
+import { Container, Button } from 'react-bootstrap';
+import './ContactButton.css';  // Import the custom CSS
+
+function ContactButton() {
   return (
-    <div style={{ textAlign: "center", margin: "2rem" }}>
-      <button style={{ padding: "1rem 2rem", fontSize: "1.2rem" }}>
-        Contact us!
-      </button>
-    </div>
+    <Container className="contact-section text-center my-5">
+      <h2 className="contact-title">Get In Touch</h2>
+      <p className="contact-subtitle">
+        Have any questions or need assistance? We're here to help! Reach out to us anytime.
+      </p>
+      <Button variant="primary" className="contact-button">Contact Us!</Button>
+    </Container>
   );
-};
+}
 
 export default ContactButton;

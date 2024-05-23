@@ -1,24 +1,53 @@
-import Feature from "./Feature/Feature";
-const FeatureSection = () => {
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import './FeatureSection.css';  // Import the custom CSS
+
+function FeatureSection() {
+  const features = [
+    {
+      text: "Revolutionize your healthcare experience with video consultations",
+      imgSrc: "image1.png",
+      imgAlt: "Video consultations",
+    },
+    {
+      text: "Connect with top healthcare professionals from diverse backgrounds",
+      imgSrc: "image2.png",
+      imgAlt: "Diverse professionals",
+    },
+    {
+      text: "Effortlessly book appointments and receive care at your fingertips",
+      imgSrc: "image3.png",
+      imgAlt: "Book appointments",
+    }
+  ];
+
   return (
-    <div>
-      <Feature
-        title="Revolutionize your healthcare experience with video consultations"
-        description="Experience seamless healthcare consultations through video calls."
-        image="placeholder-image-url" // Replace with actual image URL
-      />
-      <Feature
-        title="Connect with top healthcare professionals from diverse backgrounds"
-        description="Get access to a wide range of healthcare specialists."
-        image="placeholder-image-url" // Replace with actual image URL
-      />
-      <Feature
-        title="Effortlessly book appointments and receive care at your fingertips"
-        description="Book and manage your appointments with ease."
-        image="placeholder-image-url" // Replace with actual image URL
-      />
-    </div>
+    <Container className="my-5 feature-section">
+      {features.map((feature, index) => (
+        <Row className="align-items-center my-4" key={index}>
+          {index % 2 === 0 ? (
+            <>
+              <Col md={6}>
+                <img src={feature.imgSrc} alt={feature.imgAlt} className="img-fluid feature-image" />
+              </Col>
+              <Col md={6} className="text-md-left text-center">
+                <h4 className="feature-text">{feature.text}</h4>
+              </Col>
+            </>
+          ) : (
+            <>
+              <Col md={6} className="text-md-right text-center">
+                <h4 className="feature-text">{feature.text}</h4>
+              </Col>
+              <Col md={6}>
+                <img src={feature.imgSrc} alt={feature.imgAlt} className="img-fluid feature-image" />
+              </Col>
+            </>
+          )}
+        </Row>
+      ))}
+    </Container>
   );
-};
+}
 
 export default FeatureSection;

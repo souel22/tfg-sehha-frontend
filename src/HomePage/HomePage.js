@@ -1,3 +1,4 @@
+import React from 'react';
 import NavBar from "./NavBar/NavBar";
 import HeroSection from "./HeroSection/HeroSection";
 import FeatureSection from "./FeatureSection/FeatureSection";

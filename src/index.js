@@ -10,6 +10,8 @@ import ConsultationPage from "./UserPages/ConsultationPage/ConsultationPage";
 import SpecialistAppointmentsPage from "./SpecialistPages/SpecialistAppointmentsPage/SpecialistAppointmentsPage";
 import SpecialistConsultationPage from "./SpecialistPages/SpecialistConsultationPage/SpecialistConsultationPage";
 import Scheduler from "./SpecialistPages/Scheduler/Scheduler";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const router = createBrowserRouter([
   {

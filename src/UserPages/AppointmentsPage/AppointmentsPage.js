@@ -79,11 +79,11 @@ const AppointmentsPage = () => {
   };
 
 //Handle Joining the appointemnt when the join button is clicked
-const handleJoin = async (joinUrl) => {
+const handleJoin = async (appointmentId) => {
   try {
     // go to path /user/video with a query that contains the joinUrl
     const path = process.env.REACT_APP_USER_VIDEO_URL;
-    const url = path + '?joinUrl=' + joinUrl
+    const url = path + '?appointemnt=' + appointmentId
 
     // redirect to URL
     window.location.href = url;

@@ -1,15 +1,17 @@
+import React from 'react';
 import AppointmentItem from "../AppointmentItem/AppointmentItem";
+import { Container } from 'react-bootstrap';
+import './AppointmentList.css';  // Import the custom CSS
 
-// AppointmentList Component
 const AppointmentList = ({ appointments, onCancel, onJoin }) => {
- console.log("@AppointmentList: ", appointments);
- 
+  console.log("@AppointmentList: ", appointments);
+  
   return (
-    <div className="appointment-list">
+    <Container className="appointment-list mt-5">
       {appointments.map((appointment, index) => (
         <AppointmentItem
           key={index}
-          appointemntId={appointment.id}
+          appointmentId={appointment.id}
           specialty={appointment.speciality.name}
           doctorName={`${appointment.specialist.firstName} ${appointment.specialist.lastName}`}
           status={appointment.status}
@@ -19,7 +21,7 @@ const AppointmentList = ({ appointments, onCancel, onJoin }) => {
           onJoin={onJoin}
         />
       ))}
-    </div>
+    </Container>
   );
 }
 

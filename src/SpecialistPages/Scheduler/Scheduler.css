@@ -1,134 +1,73 @@
-.scheduler {
-    font-family: 'Arial', sans-serif;
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .scheduler-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .scheduler-header img.logo {
-    max-height: 50px;
-  }
-  
-  .scheduler-header nav button {
-    background-color: transparent;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: #007bff;
-  }
-  
-  .scheduler-header nav button:hover {
-    color: #0056b3;
-  }
-  
-  .appointment-form h2 {
-    color: #333;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .appointment-form input,
-  .appointment-form select,
-  .appointment-form textarea {
-    width: calc(100% - 1rem);
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .appointment-form textarea {
-    height: 100px;
-    resize: vertical;
-  }
-  
-  .appointment-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #666;
-    font-size: 1rem;
-  }
-  
-  .appointment-form button {
-    padding: 0.5rem 1rem;
-    border: 1px solid #007bff;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  .appointment-form button[type="button"] {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    margin-left: 0.5rem;
-  }
-  
-  .appointment-form button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-  
-  .appointment-form button[type="button"]:hover {
-    background-color: #5a6268;
-    border-color: #5a6268;
-  }
-  
-  .error-message {
-    margin: 20px 0;
-    padding: 10px;
-    background-color: #ffdddd;
-    border-left: 6px solid #f44336;
-    color: #d8000c;
-    /* Make the text stand out */
-    text-shadow: 1px 1px rgba(255,255,255,0.5);
-    /* Soften the edges */
-    border-radius: 5px;
-  }
-  
-  /* Optional: Add a little icon or emoji for visual emphasis */
-  .error-message:before {
-    content: "⚠️";
-    padding-right: 5px;
-  }
-  
-  /* If you want the error message to be dismissible */
-  .error-message.dismissible {
-    position: relative;
-    padding-right: 30px; /* Make space for the close button */
-  }
-  
-  .error-message.dismissible:after {
-    content: "✖";
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #9c1c1c;
-  }
-  
+/* Color Palette */
+:root {
+  --primary-color: #1574C4; /* Blue */
+  --success-color: #35CE8D; /* Green */
+  --light-color: #FFFFFF; /* White */
+  --secondary-color: #928779; /* Grey */
+  --dark-color: #00171F; /* Dark Blue */
+  --danger-color: #dc3545; /* Red */
+}
 
-  /* Utility classes */
-  .hidden {
-    display: none;
-  }
-  
+.scheduler {
+  background-color: var(--light-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.appointment-form {
+  background-color: var(--light-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-form .form-title {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.appointment-form .form-group label {
+  font-weight: bold;
+}
+
+.appointment-form .form-group input, .appointment-form .form-group select {
+  border-radius: 5px;
+}
+
+.appointment-form .btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+}
+
+.appointment-form .btn-primary:hover {
+  background-color: var(--dark-color);
+}
+
+.appointment-form .btn-secondary {
+  background-color: var(--secondary-color);
+  border: none;
+}
+
+.appointment-form .btn-secondary:hover {
+  background-color: var(--dark-color);
+}
+
+.error-message {
+  margin-top: 20px;
+}
+
+button[aria-controls="calendar-collapse-text"] {
+  margin-top: 20px;
+}
+
+#calendar-collapse-text {
+  margin-top: 20px;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

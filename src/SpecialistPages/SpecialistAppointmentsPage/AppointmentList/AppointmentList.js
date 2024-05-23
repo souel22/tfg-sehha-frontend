@@ -1,23 +1,28 @@
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import AppointmentItem from "../AppointmentItem/AppointmentItem";
+import './AppointmentList.css';
 
 // AppointmentList Component
 const AppointmentList = ({ appointments, onJoin, onCancel }) => {
-
   console.log("apps: ", appointments);
   return (
-    <div className="appointment-list">
-      {appointments.map((appointment, index) => (
-        <AppointmentItem
-          key={index}
-          specialty={appointment.speciality.name}
-          userName={appointment.user.firstName + " " + appointment.user.lastName}
-          date={appointment.date}
-          duration={appointment.duration}
-          onJoin={onJoin}
-          onCancel={onCancel}
-        />
-      ))}
-    </div>
+    <Container className="appointment-list">
+      <Row>
+        {appointments.map((appointment, index) => (
+          <Col md={6} key={index} className="mb-4">
+            <AppointmentItem
+              specialty={appointment.speciality.name}
+              userName={appointment.user.firstName + " " + appointment.user.lastName}
+              date={appointment.date}
+              duration={appointment.duration}
+              onJoin={onJoin}
+              onCancel={onCancel}
+            />
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 }
 

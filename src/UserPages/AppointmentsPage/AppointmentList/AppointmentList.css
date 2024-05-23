@@ -1,0 +1,10 @@
+.appointment-list {
+    background-color: #f8f9fa; /* Light grey background */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Padding for spacing */
+  }
+  
+  .appointment-list .appointment-item {
+    margin-bottom: 20px; /* Space between items */
+  }
+  

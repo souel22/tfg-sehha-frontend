@@ -1,48 +1,68 @@
-import "./AppointmentItem.css"
+import React from 'react';
+import { Card, Button, Row, Col, Image } from 'react-bootstrap';
+import './AppointmentItem.css';
 
-// AppointmentItem Component
-const AppointmentItem = ({ appointemntId, specialty, doctorName, status, date, time, joinUrl, onCancel, onJoin }) => {
+const AppointmentItem = ({ appointmentId, specialty, doctorName, profileImage, status, date, time, onCancel, onJoin }) => {
   // Handle the cancel button click event
-  const handleCancelClick = (appointemntId) => {
-    onCancel(appointemntId);
+  const handleCancelClick = (appointmentId) => {
+    onCancel(appointmentId);
   };
 
-  //handle the join button click event
-  const handleJoinClick = (joinUrl) => {
-    onJoin(joinUrl);
+  // Handle the join button click event
+  const handleJoinClick = (appointmentId) => {
+    onJoin(appointmentId);
   };
-  console.log("speciality: ", specialty);
-  console.log(doctorName);
-
 
   return (
-    <div className="appointment-item">
-      <div className="appointment-info">
-        <div className="specialty">{specialty}</div>
-        <div className="doctor-name">Dr. {doctorName}</div>
-      </div>
-      <div className="appointment-time">
-        <div className="date">{date}</div>
-        <div className="time">{time}</div>
-      </div>
-      <div className="appointment-actions">
-        {/* Conditional rendering for the join button based on status */}
-        {status !== 'cancelled' && (
-          <button className="join-button" onClick={() => handleJoinClick(joinUrl)}>Join</button>
-        )}
-        <button
-          className="cancel-button"
-          onClick={() => handleCancelClick(appointemntId)}
-          style={{ backgroundColor: status === 'cancelled' ? 'grey' : '', cursor: status === 'cancelled' ? 'not-allowed' : '' }}
-          disabled={status === 'cancelled'} // This makes the button not clickable when the status is 'cancelled'
-        >
-          Cancel
-        </button>
-
-      </div>
-    </div>
-  )
-
+    <Card className="appointment-card mb-3">
+      <Card.Body>
+        <Row className="align-items-center">
+          <Col md={2} className="text-center">
+            <Image src={profileImage} roundedCircle width={50} height={50} />
+          </Col>
+          <Col md={4}>
+            <div className="d-flex flex-column">
+              <Card.Title className="specialty-title">{specialty}</Card.Title>
+              <Card.Subtitle className="doctor-subtitle">Dr. {doctorName}</Card.Subtitle>
+            </div>
+          </Col>
+          <Col md={3} className="text-center">
+            <div className="d-flex flex-column">
+              <div className="appointment-date">{date}</div>
+              <div className="appointment-time">{time}</div>
+            </div>
+          </Col>
+          <Col md={3} className="text-center">
+            <div className="d-flex flex-column">
+              {status !== 'cancelled' && (
+                <>
+                  <Button variant="primary" onClick={() => handleJoinClick(appointmentId)} className="mb-2">
+                    Join
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleCancelClick(appointmentId)}
+                    className="cancel-button"
+                  >
+                    Cancel
+                  </Button>
+                </>
+              )}
+              {status === 'cancelled' && (
+                <Button
+                  variant="secondary"
+                  disabled
+                  className="canceled-button"
+                >
+                  Canceled
+                </Button>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
+  );
 };
 
 export default AppointmentItem;

@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import axios from 'axios';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './Calendar.css';
+import './Calendar.css'; // You can add specific styles for the calendar here
 
 const localizer = momentLocalizer(moment);
 
@@ -64,7 +64,7 @@ const SpecialistCalendar = ({ specialistId, userId, selectedSpecialtyId }) => {
     };
 
     return (
-        <div style={{ height: 700 }}>
+        <div className="specialist-calendar-container">
             <Calendar
                 localizer={localizer}
                 events={events}
