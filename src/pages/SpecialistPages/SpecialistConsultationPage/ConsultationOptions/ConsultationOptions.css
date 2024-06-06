@@ -1,0 +1,35 @@
+.consultation-options {
+  margin-top: 20px;
+}
+
+.video {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.video-item {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn {
+  margin-top: 20px;
+}
+
+.btn .btn-start,
+.btn .btn-end {
+  margin: 0 5px;
+}
+
+.btn-start {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-end {
+  background-color: #dc3545;
+  color: white;
+}
