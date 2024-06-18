@@ -25,21 +25,6 @@ const AppointmentBookingPage = () => {
       console.log("authenticatedUser:", authenticatedUser);
       setUser(authenticatedUser.user)
 
-      // const fetchUser = async () => {
-      //   try {
-      //     const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_USERS_PATH;
-      //     const baseUrl = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_URL;
-      //     const url = `${baseUrl}${path}/${authenticatedUser.user.id}`;
-      //     const response = await axios.get(url, {
-      //       headers: { Authorization: `Bearer ${authenticatedUser.token}` }
-      //     });
-      //     setUser(response.data);
-      //   } catch (error) {
-      //     console.error("Error fetching user data:", error);
-      //     setError("Failed to load user data.");
-      //   }
-      // };
-
       const fetchSpecialists = async () => {
         try {
           const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALISTS_PATH;
@@ -113,7 +98,7 @@ const AppointmentBookingPage = () => {
                 specialities={specialist.specialities}
                 specialistId={specialist.id}
                 userId={user.id}
-                profileImage={specialist.profileImage}
+                profileImage={`${process.env.PUBLIC_URL}/images/empty-profile-picture.webp`}
                 token={authenticatedUser.token}
               />
             </Col>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
+import axios from 'axios'
 
 export const useSignup = () => {
   const [error, setError] = useState(null)
@@ -19,19 +20,16 @@ export const useSignup = () => {
       case 'specialist':
         url = process.env.REACT_APP_SIGNUP_SPECIALIST_ENDPOINT
         break;
+      default:
+        throw new Error('Invalid user type')
     }
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(userData)
-    })
-    const json = await response.json()
 
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
-    }
-    if (response.ok) {
+    try {
+      const response = await axios.post(url, userData, {
+        headers: {'Content-Type': 'application/json'}
+      })
+      const json = response.data
+
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
 
@@ -40,6 +38,9 @@ export const useSignup = () => {
 
       // update loading state
       setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      setError(error.response ? error.response.data.error : 'An error occurred')
     }
   }
 

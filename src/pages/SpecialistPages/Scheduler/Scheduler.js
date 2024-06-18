@@ -6,6 +6,7 @@ import Footer from './Footer/Footer';
 import SpecialistCalendar from './SpecialistCalendar/SpecialistCalendar';
 import axios from 'axios';
 import { useLogout } from '../../../hooks/useLogout';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 import './Scheduler.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
@@ -14,33 +15,44 @@ const Scheduler = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(true);
   const [open, setOpen] = useState(false); // State for the collapsible calendar
+  const [specialist, setSpecialist] = useState({});
 
   const { register, handleSubmit, watch, control, formState: { errors } } = useForm();
   const { logout } = useLogout();
+  const { user: authenticatedUser } = useAuthContext();
   const recurrenceType = watch('recurrenceType');
 
-  const specialistId = "65e642d785477a61386469a0";
   const baseUrl = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_URL;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALIST_PATH.replace("<specialistId>", specialistId);
-        const url = baseUrl + path;
 
-        const response = await axios.get(url);
-        setSpecialistName(response.data.name);
-      } catch (e) {
-        console.error("There was an error fetching the specialist info", e);
-      }
-    };
+    if (authenticatedUser) {
+      console.log("Authenticated user", authenticatedUser)
+      setSpecialist(authenticatedUser.specialist)
+      console.log("Specialist", specialist)
+      const fetchData = async () => {
+        try {
+          const path = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALIST_PATH.replace("<specialistId>", specialist.id);
+          const url = baseUrl + path;
 
-    fetchData();
-  }, [specialistId, baseUrl]);
+          const response = await axios.get(url, 
+            {
+              headers: { Authorization: `Bearer ${authenticatedUser.token}` }
+            }
+          );
+          setSpecialistName(response.data.name);
+        } catch (e) {
+          console.error("There was an error fetching the specialist info", e);
+        }
+      };
+
+      fetchData();
+    }
+  }, [authenticatedUser, baseUrl, specialist]);
 
   const onSubmit = async (data) => {
     const { date, hour, duration, recurrenceType, numberOfSlots, recurrence } = data;
-    const schedulePath = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALIST_SCHEDULE_PATH.replace('<specialistId>', specialistId);
+    const schedulePath = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALIST_SCHEDULE_PATH.replace('<specialistId>', specialist.id);
     const scheduleUrl = `${baseUrl}${schedulePath}`;
 
     let slots = [];
@@ -84,7 +96,9 @@ const Scheduler = () => {
     }
 
     try {
-      const response = await axios.post(scheduleUrl, slots);
+      const response = await axios.post(scheduleUrl, slots, {
+        headers: { Authorization: `Bearer ${authenticatedUser.token}` },
+      });
       console.log('Slots created:', response.data);
     } catch (error) {
       console.error('Error creating slots:', error);
@@ -188,7 +202,7 @@ const Scheduler = () => {
           </Button>
           <Collapse in={open}>
             <div id="calendar-collapse-text">
-              <SpecialistCalendar specialistId={specialistId} />
+              <SpecialistCalendar specialistId={specialist.id} />
             </div>
           </Collapse>
         </div>

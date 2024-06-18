@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuthContext } from './useAuthContext';
+import axios from 'axios';
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -23,19 +24,13 @@ export const useLogin = () => {
         throw new Error('Invalid user type');
     }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const json = await response.json();
-    console.log("Login response: ", json);
+    try {
+      const response = await axios.post(url, { email, password }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const json = response.data;
+      console.log("Login response: ", json);
 
-    if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
-    }
-    if (response.ok) {
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json));
 
@@ -44,6 +39,9 @@ export const useLogin = () => {
 
       // update loading state
       setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setError(error.response ? error.response.data.error : 'An error occurred');
     }
   };
 

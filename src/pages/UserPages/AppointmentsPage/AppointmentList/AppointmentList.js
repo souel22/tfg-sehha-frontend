@@ -17,6 +17,7 @@ const AppointmentList = ({ appointments, onCancel, onJoin }) => {
           status={appointment.status}
           date={appointment.date}
           time={appointment.duration}
+          profileImage={`${process.env.PUBLIC_URL}/images/empty-profile-picture.webp`}
           onCancel={onCancel}
           onJoin={onJoin}
         />

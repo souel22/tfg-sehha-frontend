@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import './SpecialistConsultationPage.css';
 import { useLocation } from 'react-router-dom';
 import { useLogout } from '../../../hooks/useLogout';
+import { useAuthContext } from '../../../hooks/useAuthContext';
 
 
 function useQuery() {
@@ -16,14 +17,19 @@ function useQuery() {
 const SpecialistConsultationPage = () => {
   const query = useQuery();
   const [socket, setSocket] = useState(null);
-
-  const appointmentId = query.get('appointment');
+  const [specialist, setSpecialist] = useState(null);
   const userId = query.get('user');
   const specialistId = query.get('specialist');
+
+  const appointmentId = query.get('appointment');
+  const { user: authenticatedUser } = useAuthContext();
   const logout = useLogout();
 
   useEffect(() => {
-    const newSocket = io(process.env.REACT_APP_VIDEO_MICRO, { transports: ['websocket'] });
+    if (authenticatedUser && authenticatedUser.specialist) {
+      setSpecialist(authenticatedUser.specialist);
+      console.log("authenticatedUser specialist: ", authenticatedUser);
+      const newSocket = io(process.env.REACT_APP_VIDEO_MICRO, { transports: ['websocket'] });
     setSocket(newSocket);
 
     console.log("socket", newSocket);
@@ -33,14 +39,21 @@ const SpecialistConsultationPage = () => {
       console.log('Disconnecting socket...');
       newSocket.disconnect();
     };
-  }, []);
+    }
+    
+  }, [authenticatedUser]);
 
-  const handleReserve = () => {
-    window.location.href = process.env.REACT_APP_USER_RESERVE_URL;
+  const handleScheduleAppointment = () => {
+    const url = process.env.REACT_APP_SPECIALIST_SCHEDULE_APPOINTMENT_URL;
+    if (url) {
+      window.location.href = url;
+    } else {
+      console.error('Schedule appointment URL is not defined.');
+    }
   };
 
   const handleAppointments = () => {
-    window.location.href = process.env.REACT_APP_USER_APPOINTMENTS_URL;
+    window.location.href = process.env.REACT_APP_SPECIALIST_APPOINTMENTS_URL;
   };
 
   const handleLogout = () => {
@@ -50,7 +63,12 @@ const SpecialistConsultationPage = () => {
 
   return (
     <div className="consultation-page">
-      <Header onReserve={handleReserve} onAppointments={handleAppointments} onLogout={handleLogout} client="user user" />
+      <Header 
+        onScheduleAppointment={handleScheduleAppointment} 
+        onLogout={handleLogout} 
+        onAppointments={handleAppointments}
+        specialist={specialist ? `Dr. ${specialist.firstName} ${specialist.lastName}` : ""} 
+      />      
       <ConsultationHeader specialty="Specialty" doctorName="Name Surname" />
       {socket && <ConsultationOptions userId={userId} specialistId={specialistId} appointmentId={appointmentId} socket={socket} />}
       <Footer />

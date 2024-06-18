@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { useSignup } from "../../../hooks/useSignup";
+import axios from 'axios';
 import './SignUpPage.css'; // Import your custom CSS
 
 function useQuery() {
@@ -17,15 +18,38 @@ const SignUpPage = () => {
   const [phone, setPhone] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
-  const [specialities, setSpecialities] = useState("");
-  const [profileImage, setProfileImage] = useState(null);
+  const [specialities, setSpecialities] = useState([]);  // Store fetched specialities
+  const [selectedSpecialities, setSelectedSpecialities] = useState([]);  // Store selected specialities
+  const [showAllSpecialities, setShowAllSpecialities] = useState(false); // Control visibility of all specialities
 
   const { signup, error, isLoading } = useSignup();
   const query = useQuery();
 
   useEffect(() => {
     setUserType(query.get('userType'));
-  }, [query]);
+
+    const fetchSpecialities = async () => {
+      try {
+        const response = await axios.get(process.env.REACT_APP_SPECIALITY_API_PATH);
+        setSpecialities(response.data);  // Store fetched specialities in state
+      } catch (error) {
+        console.error('Error fetching specialities:', error);
+      }
+    };
+
+    if (userType === "specialist") {
+      fetchSpecialities();
+    }
+  }, [query, userType]);
+
+  const handleSpecialityChange = (e) => {
+    const value = e.target.value;
+    setSelectedSpecialities((prevSelected) =>
+      prevSelected.includes(value)
+        ? prevSelected.filter((speciality) => speciality !== value)
+        : [...prevSelected, value]
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,15 +75,15 @@ const SignUpPage = () => {
           firstName,
           lastName,
           phone,
-          specialities,
-          profileImage
+          specialities: selectedSpecialities  // Include selected specialities
         };
         break;
       default:
         console.log("Invalid user type");
-        break;
+        return;
     }
 
+    console.log("userData:", userData);
     await signup(userType, userData);
   };
 
@@ -154,21 +178,39 @@ const SignUpPage = () => {
                 {userType === "specialist" && (
                   <>
                     <Form.Group controlId="formBasicSpecialities">
-                      <Form.Control 
-                        type="text" 
-                        placeholder="Specialities" 
-                        className="signup-input mb-3" 
-                        required 
-                        value={specialities} 
-                        onChange={(e) => setSpecialities(e.target.value)} 
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicProfileImage">
-                      <Form.Control 
-                        type="file" 
-                        className="signup-input mb-3" 
-                        onChange={(e) => setProfileImage(e.target.files[0])} 
-                      />
+                      <Form.Label>Select Specialities</Form.Label>
+                      <div className="speciality-checkboxes">
+                        {specialities.slice(0, 3).map(speciality => (
+                          <Form.Check 
+                            type="checkbox"
+                            key={speciality._id}
+                            id={`formBasicSpecialities-${speciality._id}`} // Unique ID
+                            value={speciality._id}
+                            label={speciality.name}
+                            checked={selectedSpecialities.includes(speciality._id)}
+                            onChange={handleSpecialityChange}
+                          />
+                        ))}
+                        {showAllSpecialities && specialities.slice(3).map(speciality => (
+                          <Form.Check 
+                            type="checkbox"
+                            key={speciality._id}
+                            id={`formBasicSpecialities-${speciality._id}`} // Unique ID
+                            value={speciality._id}
+                            label={speciality.name}
+                            checked={selectedSpecialities.includes(speciality._id)}
+                            onChange={handleSpecialityChange}
+                          />
+                        ))}
+                      </div>
+                      {specialities.length > 3 && (
+                        <Button 
+                          variant="link" 
+                          onClick={() => setShowAllSpecialities(!showAllSpecialities)}
+                        >
+                          {showAllSpecialities ? 'Show Less' : 'Show More'}
+                        </Button>
+                      )}
                     </Form.Group>
                   </>
                 )}
@@ -177,10 +219,10 @@ const SignUpPage = () => {
                 </Button>
                 {error && <div className="error">{error}</div>}
                 <div className="text-center">
-                  <span><a href={userType === "user" ? `${process.env.REACT_APP_LOGIN}?userType=user` : userType === "specialist" ? `${process.env.REACT_APP_LOGIN}?userType=specialist` : null} className="d-block mb-2">Already have an account? Log In</a></span>
+                  <span><a href={userType === "user" ? `${process.env.REACT_APP_LOGIN}?userType=user` : `${process.env.REACT_APP_LOGIN}?userType=specialist`} className="d-block mb-2">Already have an account? Log In</a></span>
                 </div>
                 <div className="text-center">
-                  <span>{userType === "user" ? <a href={`${process.env.REACT_APP_SIGNUP}?userType=specialist`} className="d-block mb-2">Are you a specialist? Sign up as a specialist</a> : userType === "specialist" ? <a href={`${process.env.REACT_APP_SIGNUP}?userType=user`} className="d-block mb-2">Are you a user? Sign up as a user</a> : null}</span>
+                  <span>{userType === "user" ? <a href={`${process.env.REACT_APP_SIGNUP}?userType=specialist`} className="d-block mb-2">Are you a specialist? Sign up as a specialist</a> : <a href={`${process.env.REACT_APP_SIGNUP}?userType=user`} className="d-block mb-2">Are you a user? Sign up as a user</a>}</span>
                 </div>
               </Form>
               <div className="text-center mt-3">

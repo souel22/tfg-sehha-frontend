@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './SpecialistCalendar.css';
+import { useAuthContext } from '../../../../hooks/useAuthContext'
 
 const localizer = momentLocalizer(moment);
 
@@ -12,17 +13,25 @@ const SpecialistCalendar = ({ specialistId }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user: authenticatedUser } = useAuthContext();
 
   const baseUrl = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_URL;
   const schedulePath = process.env.REACT_APP_APPOINTMENT_MANAGEMENT_API_SPECIALIST_SCHEDULE_PATH.replace('<specialistId>', specialistId);
 
   useEffect(() => {
+    if(authenticatedUser){
+
     const fetchSchedule = async () => {
       const url = `${baseUrl}${schedulePath}`;
 
       try {
-        const response = await axios.get(url);
-        const slots = response.data.slots.map(slot => {
+        const response = await axios.get(url,
+          {
+            headers: { Authorization: `Bearer ${authenticatedUser.token}` }
+          }
+        );
+        console.log("response: ", response.data);
+        const slots = response.data.slots ? response.data.slots.map(slot => {
           const startDate = new Date(`${slot.date}T${slot.time}`);
           const durationParts = slot.duration.split(':');
           const durationMinutes = parseInt(durationParts[0], 10) * 60 + parseInt(durationParts[1], 10);
@@ -35,8 +44,10 @@ const SpecialistCalendar = ({ specialistId }) => {
             end: endDate,
             allDay: false
           };
-        });
+        }) : [];
         setEvents(slots);
+        setError(null)
+        console.log("slots: ", slots)
       } catch (error) {
         console.error('Error fetching schedule:', error);
         setError('Error fetching schedule.');
@@ -46,12 +57,15 @@ const SpecialistCalendar = ({ specialistId }) => {
     };
 
     fetchSchedule();
-  }, [specialistId, baseUrl, schedulePath]);
+  }
+  }, [specialistId, baseUrl, schedulePath], authenticatedUser);
 
   const deleteSlot = async (slotId) => {
     try {
       await axios.delete(`${baseUrl}/specialists/${specialistId}/schedule/`, {
         data: { slotId }
+      }, {
+        headers: { Authorization: `Bearer ${authenticatedUser.token}` }
       });
       alert('Slot deleted successfully');
       setEvents(events.filter(event => event.id !== slotId));
