@@ -25,10 +25,34 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        id: build-image
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
           push: false
+          platforms: linux/amd64, linux/arm64
+          tags: ${{ secrets.DOCKER_USERNAME }}/sehha-frontend:latest
+
+      - name: Run container for testing
+        run: docker run -d -p 8080:80 --name test-container ${{ secrets.DOCKER_USERNAME }}/sehha-frontend:latest
+
+      - name: Wait for the container to be up
+        run: sleep 10
+
+      - name: Test the container
+        run: |
+          curl -f http://localhost:8080 || (docker logs test-container && exit 1)
+
+      - name: Stop and remove the container
+        run: docker rm -f test-container
+
+      - name: Push Docker image to Docker Hub
+        if: success()
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
           platforms: linux/amd64, linux/arm64
           tags: ${{ secrets.DOCKER_USERNAME }}/sehha-frontend:latest
