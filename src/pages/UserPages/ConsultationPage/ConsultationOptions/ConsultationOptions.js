@@ -140,9 +140,6 @@ function ConsultationOptions({ appointmentId, userId, specialistId, socket }) {
 
   useEffect(() => {
     console.log('Component mounted');
-    console.log('Appointment ID:', appointmentId);
-    console.log('User ID:', userId);
-    console.log('Specialist ID:', specialistId);
 
     socket.on('message', e => {
       console.log('Received message:', e);
